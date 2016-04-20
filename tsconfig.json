@@ -1,0 +1,39 @@
+{
+  "version": "1.8.10",
+  "compilerOptions": {
+    "rootDir": "src/typescript",
+    "outDir": "app/dev/js",
+    "target": "es5",
+    "module": "system",
+    "moduleResolution": "node",
+    "declaration": false,
+    "noImplicitAny": false,
+    "removeComments": true,
+    "noLib": false,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "sourceMap": true,
+    "listFiles": true
+  },
+  "files": [
+    "node_modules/angular2/typings/browser.d.ts",
+    "node_modules/rxjs/Rx.d.ts",
+
+    "src/typescript/app.component.ts",
+    "src/typescript/boot.ts",
+
+    "src/typescript/hello-app.ts",
+    "src/typescript/hiya.ts"
+  ],
+  "filesGlob": [
+    "src/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "typings/main",
+    "typings/main.d.ts"
+  ],
+  "atom": {
+    "rewriteTsconfig": false
+  }
+}
