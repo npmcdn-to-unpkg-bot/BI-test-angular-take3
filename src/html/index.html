@@ -4,36 +4,38 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
     <title>Angular 2 test — take 3</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="assets/css/style.css">
 
     <!-- 1. Load libraries -->
     <!-- IE required polyfills, in this exact order -->
-    <script src="js/lib/ang2/es6-shim.min.js"></script>
-    <script src="js/lib/ang2/system-polyfills.js"></script>
-    <!-- <script src="js/lib/ang2/shims_for_IE.js"></script>    -->
-
-    <script src="js/lib/ang2/angular2-polyfills.js"></script>
-    <script src="js/lib/ang2/system.src.js"></script>
-    <script src="js/lib/ang2/Rx.js"></script>
-    <script src="js/lib/ang2/angular2.dev.js"></script>
+    <script src="assets/js/lib/ang2/es6-shim.min.js"></script>
+    <script src="assets/js/lib/ang2/system-polyfills.js"></script>
+    <script src="assets/js/lib/ang2/shims_for_IE.js"></script>
+    <script src="assets/js/lib/ang2/angular2-polyfills.js"></script>
+    <script src="assets/js/lib/ang2/system.src.js"></script>
+    <script src="assets/js/lib/ang2/Rx.js"></script>
+    <script src="assets/js/lib/ang2/angular2.dev.js"></script>
 
     <!-- 2. Configure SystemJS -->
     <script>
-      System.config({
-        packages: {
-          app: {
-            format: 'register',
-            defaultExtension: 'js'
-          }
-        }
-      });
-      System.import('js/boot')
-            .then(null, console.error.bind(console));
-    </script>
+       System.config({
+         packages: {
+           assets: {
+             format: 'register',
+             defaultExtension: 'js'
+           }
+         }
+       });
+       System.import('assets/js/boot')
+             .then(null, console.error.bind(console));
+     </script>
   </head>
 
   <!-- 3. Display the application -->
   <body>
-    <the-app>Loading...</the-app>
+    <the-app>
+      Loading...<br>
+      Please wait…
+    </the-app>
   </body>
 </html>

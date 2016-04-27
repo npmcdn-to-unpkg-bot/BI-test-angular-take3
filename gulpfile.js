@@ -37,12 +37,10 @@ var gulp = require('gulp'),
     sourcemaps = require('gulp-sourcemaps'),
     tscConfig = require('./tsconfig.json');
 
-var appDst = 'app/dev/',
-    appSrc = 'src/';
-
 const dirs = {
-  appDst: 'app/dev/',
-  appSrc: 'src/'
+      appDst: 'app/dev/',
+      assDst: 'app/dev/assets/',
+      appSrc: 'src/'
 };
 
 gulp.task('libsetup', function() {
@@ -50,25 +48,26 @@ gulp.task('libsetup', function() {
     .src([
       'node_modules/es6-shim/es6-shim.min.js',
       'node_modules/systemjs/dist/system-polyfills.js',
+      'node_modules/angular2/es6/dev/src/testing/shims_for_IE.js',
       'node_modules/angular2/bundles/angular2-polyfills.js',
       'node_modules/systemjs/dist/system.src.js',
       'node_modules/rxjs/bundles/Rx.js',
       'node_modules/angular2/bundles/angular2.dev.js'
     ])
-    .pipe(gulp.dest(appDst + 'js/lib/ang2'));
+    .pipe(gulp.dest(dirs.assDst + 'js/lib/ang2'));
 });
 
-gulp.task('html', function() {                        //TODO: add minimizing
-  gulp.src(appDst + '**/*.html');
-});
+// gulp.task('html', function() {
+//   gulp.src(dirs.appDst + '**/*.html');
+// });
 
 gulp.task('html.dev', function() {                    //TODO: add minimizing
-  gulp.src(appSrc + 'html/**/*.html')
-      .pipe(gulp.dest(appDst));
+  gulp.src(dirs.appSrc + 'html/**/*.html')
+      .pipe(gulp.dest(dirs.appDst));
 });
 
 gulp.task('styles', function() {
-  gulp.src(appSrc + 'scss/**/*.scss');                       //TODO: add sass processing, linting, minimizing, uglyfying
+  gulp.src(dirs.appSrc + 'scss/**/*.scss');                       //TODO: add sass processing, linting, minimizing, uglyfying
 });
 
 
@@ -99,14 +98,14 @@ gulp.task('styles', () => {
 
 
 // gulp.task('styles', function() {
-//   gulp.src(appDst + 'less/**/*.less');                       //TODO: add sass processing, linting, minimizing, uglyfying
+//   gulp.src(dirs.appDst + 'less/**/*.less');                       //TODO: add sass processing, linting, minimizing, uglyfying
 // });
 
 // gulp.task('build.js.dev', function() {
 //     var tsProject = typescript.createProject('tsconfig.json');
 //     var tsResult = tsProject.src()
 //         .pipe(typescript(tsProject));
-//     return tsResult.js.pipe(gulp.dest(appDst + 'js/'));
+//     return tsResult.js.pipe(gulp.dest(dirs.appDst + 'js/'));
 // });
 
 
@@ -118,17 +117,18 @@ gulp.task('typescript', function() {
     .pipe(sourcemaps.init())
     .pipe(typescript(tscConfig.compilerOptions))
     .pipe(sourcemaps.write('.'))
-    .pipe(gulp.dest(appDst + 'js/'));
+    .pipe(gulp.dest(dirs.assDst + 'js/'));
 });
 
 gulp.task('watch', function() {
-  gulp.watch(appSrc + 'typescript/**/*.ts', ['typescript']);
-  gulp.watch(appDst + 'css/*.css',          ['styles']);
-  gulp.watch(appDst + '**/*.html',          ['html']);
+  gulp.watch(dirs.appSrc + '**/*.html',          ['html.dev']);
+  gulp.watch(dirs.appSrc + 'typescript/**/*.ts', ['typescript']);
+  gulp.watch(dirs.appSrc + 'less/*.less',        ['styles']);
+//  gulp.watch(dirs.appDst + '**/*.html',          ['html']);
 });
 
 gulp.task('webserver', function() {
-  gulp.src(appDst)
+  gulp.src(dirs.appDst)
     .pipe(webserver({
       livereload: true,
       open: true
