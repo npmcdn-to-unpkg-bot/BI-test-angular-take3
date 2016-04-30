@@ -1,1 +1,1 @@
-{"version":3,"file":"hiya.js","sourceRoot":"","sources":["../../../src/typescript/hiya.ts"],"names":[],"mappings":"AAAA;IACE;QACE,OAAO,CAAC,GAAG,CAAC,kBAAkB,CAAC,CAAC;IAClC,CAAC;IACH,UAAC;AAAD,CAAC,AAJD,IAIC"}
+{"version":3,"sources":["hiya.ts"],"names":[],"mappings":"AAAA;IACE;QACE,OAAO,CAAC,GAAG,CAAC,kBAAkB,CAAC,CAAC;IAClC,CAAC;IACH,UAAC;AAAD,CAJA,AAIC,IAAA","file":"hiya.js","sourcesContent":["class Foo {\n  constructor() {\n    console.log('hiya, hiya, hiya');\n  }\n}\n"],"sourceRoot":"/source/"}

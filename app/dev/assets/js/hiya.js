@@ -4,4 +4,5 @@ var Foo = (function () {
     }
     return Foo;
 }());
+
 //# sourceMappingURL=hiya.js.map
