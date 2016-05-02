@@ -1,7 +1,7 @@
 {
-  "name": "test-angular-take3",
+  "name": "BI-test-angular-take3",
   "version": "1.0.0",
-  "description": "This is the third take on test Angular project. Now with AngularJS 2, GULP, TypeScript, SCSS and more…",
+  "description": "This is the third take on test Angular project. Now with AngularJS 2, GULP, TypeScript and more…",
   "main": "index.html",
   "scripts": {
     "start": "tsc && concurrently \"npm run tsc:w\" \"npm run lite\" ",

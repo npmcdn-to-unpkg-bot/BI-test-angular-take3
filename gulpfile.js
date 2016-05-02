@@ -91,14 +91,8 @@ gulp.task('html', () => {                    //TODO: add minimizing
       .pipe(browserSync.reload({stream:true}));
 });
 
-// gulp.task('styles', () => {
-//   gulp.src(dir.appSrc + 'scss/**/*.scss');   //TODO: add sass processing, linting, minimizing, uglyfying
-// });
-
-// Concat and minify styles
-// Compile *.less-files to css
-// Convert small images to base64, minify css
-gulp.task('styles', () => {
+// Concat and minify styles. Compile *.less-files to css. Convert small images to base64, minify css
+gulp.task('styles.less', () => {
 	return gulp.src(dir.appSrc + 'less/style.less')
 		.pipe(less({
 			plugins: [autoprefix]
@@ -113,6 +107,7 @@ gulp.task('styles', () => {
 		.pipe(minifyCSS({
 			keepBreaks: false // New rule will have break if 'true'
 		}))
+//    .pipe(header(banner, {pkg: pkg}))
 		.pipe(gulp.dest(dir.assDst + 'css'))
 		.pipe(size({
 			title: 'size of styles'
@@ -120,18 +115,10 @@ gulp.task('styles', () => {
 		.pipe(browserSync.reload({stream:true}));
 });
 
-
+//TODO: add sass
 // gulp.task('styles', () => {
-//   gulp.src(dir.appDst + 'less/**/*.less');                       //TODO: add sass processing, linting, minimizing, uglyfying
+//   gulp.src(dir.appSrc + 'scss/**/*.scss');   //TODO: add sass processing, linting, minimizing, uglyfying
 // });
-
-// gulp.task('build.js.dev', () => {
-//     var tsProject = typescript.createProject('tsconfig.json');
-//     var tsResult = tsProject.src()
-//         .pipe(typescript(tsProject));
-//     return tsResult.js.pipe(gulp.dest(dir.appDst + 'js/'));
-// });
-
 
 gulp.task('js.typescript', () => {
   return gulp
@@ -147,8 +134,8 @@ gulp.task('js.typescript', () => {
 gulp.task('watch', () => {
   gulp.watch(dir.appSrc + '**/*.html',          ['html']);
   gulp.watch(dir.appSrc + 'typescript/**/*.ts', ['js.typescript']);
-  gulp.watch(dir.appSrc + 'less/*.less',        ['styles']);
-//  gulp.watch(dir.appDst + '**/*.html',          ['html']);
+  gulp.watch(dir.appSrc + 'less/*.less',        ['styles.less']);
+//  gulp.watch(dir.appSrc + 'scss/*.scss',        ['styles.scss']);
 });
 
 // gulp.task('webserver', () => {
