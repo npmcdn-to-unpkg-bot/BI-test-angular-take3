@@ -2,7 +2,7 @@
   "version": "1.8.10",
   "compilerOptions": {
     "rootDir": "src/typescript",
-    "outDir": "app/dev/js",
+    "outDir": "app/dev/assets/js",
     "target": "es5",
     "module": "system",
     "moduleResolution": "node",
@@ -16,12 +16,8 @@
     "listFiles": true
   },
   "files": [
-    "node_modules/angular2/typings/browser.d.ts",
-    "node_modules/rxjs/Rx.d.ts",
-
     "src/typescript/app.component.ts",
     "src/typescript/boot.ts",
-
     "src/typescript/hello-app.ts",
     "src/typescript/hiya.ts"
   ],
@@ -29,11 +25,9 @@
     "src/**/*.ts"
   ],
   "exclude": [
-    "node_modules",
-    "typings/main",
-    "typings/main.d.ts"
+    "node_modules"
   ],
   "atom": {
-    "rewriteTsconfig": false
+    "rewriteTsconfig": true
   }
 }

@@ -11,12 +11,11 @@ const env = process.env.NODE_ENV,
   		cache               = require('gulp-cache'),
   		clean               = require('gulp-rimraf'),
   		stream              = require('event-stream'),
-		  browserSync         = require('browser-sync'),
-		  browserify          = require('browserify'),
+		  browserSync         = require('browser-sync').create(),
   		uglify              = require('gulp-uglify'),
-//  		source              = require('vinyl-source-stream'),
   		size                = require('gulp-size'),
   		concat              = require('gulp-concat'),
+  		header              = require('gulp-header'),
   		minifyCSS           = require('gulp-minify-css'),
   		base64              = require('gulp-base64'),
   		imagemin            = require('gulp-imagemin'),
@@ -50,7 +49,11 @@ gulp.task('js.libsetup', () => {
       'node_modules/rxjs/bundles/Rx.js',
       'node_modules/angular2/bundles/angular2.dev.js'
     ])
-    .pipe(gulp.dest(dir.assDst + 'js/lib/ang2'));
+    .pipe(gulp.dest(dir.assDst + 'js/lib/ang2'))
+    .pipe(size({
+      title: 'size of libraries'
+    }));
+
 });
 
 // Prepare banner text
@@ -107,35 +110,41 @@ gulp.task('styles.less', () => {
 		.pipe(minifyCSS({
 			keepBreaks: false // New rule will have break if 'true'
 		}))
-//    .pipe(header(banner, {pkg: pkg}))
+    .pipe(header(banner, {pkg: pkg}))
 		.pipe(gulp.dest(dir.assDst + 'css'))
 		.pipe(size({
-			title: 'size of styles'
+			title: 'size of LESS styles'
 		}))
 		.pipe(browserSync.reload({stream:true}));
 });
 
 //TODO: add sass
-// gulp.task('styles', () => {
-//   gulp.src(dir.appSrc + 'scss/**/*.scss');   //TODO: add sass processing, linting, minimizing, uglyfying
-// });
+gulp.task('styles.scss', () => {
+  gulp.src(dir.appSrc + 'scss/**/*.scss');   //TODO: add sass processing, linting, minimizing, uglyfying
+});
 
 gulp.task('js.typescript', () => {
   return gulp
     .src([
-      "dir.appSrc + 'typescript/**/*.ts'"
+      dir.appSrc + 'typescript/**/*.ts'
     ])
     .pipe(sourcemaps.init())
     .pipe(typescript(tsConfig.compilerOptions))
     .pipe(sourcemaps.write('.'))
-    .pipe(gulp.dest(dir.assDst + 'js/'));
+    .pipe(gulp.dest(dir.assDst + 'js/'))
+    .pipe(size({
+      title: 'size of TypeScript js'
+    }))
+    .pipe(browserSync.reload({stream:true}));
 });
 
-// Compress images
-// Will cache to process only changed images, but not all in image folder
-// optimizationLevel - range from 0 to 7 (compression will work from 1) which means number of attempts
+// Compress images — Will cache to process only changed images, but not all in image folder [ optimizationLevel - range from 0 to 7 (compression will work from 1) which means number of attempts ]
 gulp.task('images', () => {
-	return gulp.src(['images/*', '!images/*.db'])
+	return gulp
+    .src([
+      dir.appSrc + 'gfx/*',
+      !dir.appSrc + 'gfx/*.db'
+    ])
 		.pipe(cache(imagemin({
 			optimizationLevel: 5,
 			progressive: true,
@@ -144,37 +153,55 @@ gulp.task('images', () => {
 		.on("error", notify.onError({
 			message: 'Images processing error: <%= error.message %>'
 		}))
-		.pipe(gulp.dest('assets/images'))
+		.pipe(gulp.dest(dir.assDst + 'gfx'))
 		.pipe(size({
-			title: 'size of images'
+			title: 'Size of images'
 		}));
 });
 
 // Clean destination dir and rebuild project
 gulp.task('clean', () => {
-  return gulp.src(['assets/css', 'assets/js', 'assets/*.html'], {read: false})
+  return gulp
+  .src(
+    [
+      dir.assDst + 'css/*',
+      dir.assDst + 'js/*',
+      dir.assDst + 'gfx/*',
+      dir.appDst + '*.html'
+    ],
+    {
+      read: false
+    }
+  )
 	.pipe(clean());
 });
 
-// Clean images cache
+// Clear image cache
 gulp.task('clear', (done) => {
   return cache.clearAll(done);
 });
 
-
+// Watcher will look for changes and execute tasks
 gulp.task('watch', () => {
   gulp.watch(dir.appSrc + '**/*.html',          ['html']);
   gulp.watch(dir.appSrc + 'typescript/**/*.ts', ['js.typescript']);
   gulp.watch(dir.appSrc + 'less/*.less',        ['styles.less']);
+  gulp.watch(dir.appSrc + 'gfx/*',              ['images']);
 //  gulp.watch(dir.appSrc + 'scss/*.scss',        ['styles.scss']);
 });
 
-// gulp.task('webserver', () => {
-//   gulp.src(dir.appDst)
-//     .pipe(webserver({
-//       livereload: true,
-//       open: true
-//     }));
-// });
+// Livereload will up local server and inject all changes made
+gulp.task('webserver', () => {
+	browserSync({
+		server: {
+			baseDir: dir.appDst
+		}
+	});
+});
 
-gulp.task('default', ['js.libsetup', 'js.typescript', 'watch', 'webserver']);
+// gulp.task('default', ['js.libsetup', 'js.typescript', 'watch', 'webserver']);
+
+// Default task will clean build dirs/build project and clear image cache
+gulp.task('default', ['clean', 'clear', 'js.libsetup'], () => {
+	gulp.start('styles', 'scripts', 'images', 'html');
+});

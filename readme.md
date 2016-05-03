@@ -11,4 +11,7 @@
 * Styling with LESS or SASS
 
 
+### Notes
+* SASS/SCSS support incomplete but even when it will be it is either LESS or SASS. 
+
 Created by Jan Mazáč jan@futureproof.cz in May 2016

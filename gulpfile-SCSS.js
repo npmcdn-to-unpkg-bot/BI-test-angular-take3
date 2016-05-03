@@ -1,6 +1,6 @@
 //* as per: https://community.nitrous.io/tutorials/setting-up-gulp-with-livereload-sass-and-other-tasks
 
-//TODO: mako it es6 (fat arrow functions)
+//TODO: make it es6 (fat arrow functions)
 
 var gulp = require('gulp'),
         sass = require('gulp-ruby-sass'),
