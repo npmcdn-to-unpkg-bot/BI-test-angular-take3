@@ -1,4 +1,4 @@
-//'use strict';
+// 'use strict'
 
 /*
 1) Should execute 'npm run prepare' before the very first run, it will install and symlink all dependencies.
@@ -14,7 +14,7 @@ const env = process.env.NODE_ENV,
 		  browserSync         = require('browser-sync'),
 		  browserify          = require('browserify'),
   		uglify              = require('gulp-uglify'),
-  		source              = require('vinyl-source-stream'),
+//  		source              = require('vinyl-source-stream'),
   		size                = require('gulp-size'),
   		concat              = require('gulp-concat'),
   		minifyCSS           = require('gulp-minify-css'),
@@ -130,6 +130,37 @@ gulp.task('js.typescript', () => {
     .pipe(sourcemaps.write('.'))
     .pipe(gulp.dest(dir.assDst + 'js/'));
 });
+
+// Compress images
+// Will cache to process only changed images, but not all in image folder
+// optimizationLevel - range from 0 to 7 (compression will work from 1) which means number of attempts
+gulp.task('images', () => {
+	return gulp.src(['images/*', '!images/*.db'])
+		.pipe(cache(imagemin({
+			optimizationLevel: 5,
+			progressive: true,
+			interlaced: true
+		})))
+		.on("error", notify.onError({
+			message: 'Images processing error: <%= error.message %>'
+		}))
+		.pipe(gulp.dest('assets/images'))
+		.pipe(size({
+			title: 'size of images'
+		}));
+});
+
+// Clean destination dir and rebuild project
+gulp.task('clean', () => {
+  return gulp.src(['assets/css', 'assets/js', 'assets/*.html'], {read: false})
+	.pipe(clean());
+});
+
+// Clean images cache
+gulp.task('clear', (done) => {
+  return cache.clearAll(done);
+});
+
 
 gulp.task('watch', () => {
   gulp.watch(dir.appSrc + '**/*.html',          ['html']);

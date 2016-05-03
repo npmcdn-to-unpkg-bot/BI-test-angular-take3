@@ -29,12 +29,12 @@
   },
   "homepage": "https://github.com/0nza/BI-test-angular-take3#readme",
   "dependencies": {
-    "angular2": "2.0.0-beta.14",
+    "angular2": "2.0.0-beta.17",
     "systemjs": "^0.19.26",
     "es6-promise": "^3.0.2",
     "es6-shim": "^0.35.0",
     "reflect-metadata": "0.1.2",
-    "rxjs": "5.0.0-beta.2",
+    "rxjs": "5.0.0-beta.6",
     "zone.js": "^0.6.10"
   },
   "devDependencies": {
@@ -48,7 +48,6 @@
     "browser-sync": "^2.12.5",
     "browserify": "^13.0.0",
     "gulp-uglify": "^1.5.3",
-    "vinyl-source-stream": "^1.1.0",
     "gulp-size": "^2.1.0",
     "gulp-concat": "^2.6.0",
     "gulp-minify-css": "^1.2.4",
