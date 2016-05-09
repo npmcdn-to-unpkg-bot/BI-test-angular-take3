@@ -71,7 +71,7 @@ gulp.task('styles', () => {
 		}))
 		.pipe(gulp.dest('assets/css'))
 		.pipe(size({
-			title: 'size of styles'
+			title: 'Size of styles'
 		}))
 		.pipe(browserSync.reload({stream:true}));
 });
@@ -95,7 +95,7 @@ gulp.task('scripts', () => {
 		.pipe(source('bundle.js'))
 		.pipe(gulp.dest('assets/js'))
 		.pipe(size({
-			title: 'size of modules'
+			title: 'Size of modules'
 		}));
 
 	const deps = gulp.src(['js/libs/*jquery*', 'js/libs/*lodash*'])
@@ -103,7 +103,7 @@ gulp.task('scripts', () => {
 		.pipe(uglify())
 		.pipe(gulp.dest('assets/js'))
 		.pipe(size({
-			title: 'size of js dependencies'
+			title: 'Size of js dependencies'
 		}));
 	stream.concat(modules, deps).pipe(browserSync.reload({stream:true, once: true}));
 });
@@ -123,7 +123,7 @@ gulp.task('images', () => {
 		}))
 		.pipe(gulp.dest('assets/images'))
 		.pipe(size({
-			title: 'size of images'
+			title: 'Size of images'
 		}));
 });
 

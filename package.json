@@ -1,4 +1,8 @@
 {
+  "engines": {
+    "node" : ">=5.9.0",
+    "npm" : ">=3.8.5"
+  },
   "name": "BI-test-angular-take3",
   "version": "1.0.0",
   "description": "This is the third take on test Angular project. Now with AngularJS 2, GULP, TypeScript and more…",
@@ -43,7 +47,8 @@
     "typescript": "^1.8.10",
     "typings": "^0.8.1",
     "gulp": "^3.9.0",
-    "gulp-cache": "^0.4.4" ,
+    "gulp-cache": "^0.4.4",
+    "gulp-util":"^3.0.7",
     "gulp-rimraf": "^0.2.0",
     "event-stream": "^3.3.2",
     "browser-sync": "^2.12.5",
@@ -60,6 +65,8 @@
     "gulp-typescript": "^2.10.0",
     "gulp-sourcemaps": "^1.6.0",
     "gulp-header": "^1.8.2",
-    "gulp-watch": "^4.3.5"
+    "gulp-watch": "^4.3.5",
+    "gulp-load-plugins": "^1.2.2",
+    "psi": "^2.0.3"
   }
 }

@@ -1,4 +1,4 @@
-// 'use strict'
+'use strict';
 
 /*
 1) Should execute 'npm run prepare' before the very first run, it will install and symlink all dependencies.
@@ -22,9 +22,12 @@ const env = process.env.NODE_ENV,
   		less                = require('gulp-less'),
   		rename              = require('gulp-rename'),
   		notify              = require("gulp-notify"),
-  		pluginAutoprefix    = require('less-plugin-autoprefix');
+  		pluginAutoprefix    = require('less-plugin-autoprefix'),
+      loadPlugins         = require('gulp-load-plugins'),
+      pageSpeed           = require('psi'),
       typescript          = require('gulp-typescript'),
       sourcemaps          = require('gulp-sourcemaps'),
+      util                = require('gulp-util'),
       pkg                 = require('./package.json'),
       tsConfig            = require('./tsconfig.json');
 
@@ -51,7 +54,7 @@ gulp.task('js.libsetup', () => {
     ])
     .pipe(gulp.dest(dir.assDst + 'js/lib/ang2'))
     .pipe(size({
-      title: 'size of libraries'
+      title: 'Size of libraries'
     }))
 		.pipe(browserSync.reload({stream:true}));
 });
@@ -89,12 +92,12 @@ gulp.task('html', () => {
 
 // Copy HTML files
 gulp.task('html', () => {                    //TODO: add minimizing (in production version)
-  gulp.src(dir.appSrc + 'html/**/*.html')
-      .pipe(gulp.dest(dir.appDst))
-      .pipe(size({
-        title: 'size of HTML'
-      }))
-      .pipe(browserSync.reload({stream:true}));
+  return gulp.src(dir.appSrc + 'html/**/*.html')
+              .pipe(gulp.dest(dir.appDst))
+              .pipe(size({
+                title: 'Size of HTML'
+              }))
+              .pipe(browserSync.reload({stream:true}));
 });
 
 // Concat and minify styles. Compile *.less-files to css. Convert small images to base64, minify css
@@ -116,14 +119,14 @@ gulp.task('styles.less', () => {
     .pipe(header(banner, {pkg: pkg}))
 		.pipe(gulp.dest(dir.assDst + 'css'))
 		.pipe(size({
-			title: 'size of LESS styles'
+			title: 'Size of LESS styles'
 		}))
 		.pipe(browserSync.reload({stream:true}));
 });
 
 //TODO: add sass
 gulp.task('styles.scss', () => {
-  gulp.src(dir.appSrc + 'scss/**/*.scss');   //TODO: add sass processing, linting, minimizing, uglyfying
+  return gulp.src(dir.appSrc + 'scss/**/*.scss');   //TODO: add sass processing, linting, minimizing, uglyfying
 });
 
 gulp.task('js.typescript', () => {
@@ -136,7 +139,7 @@ gulp.task('js.typescript', () => {
     .pipe(sourcemaps.write('.'))
     .pipe(gulp.dest(dir.assDst + 'js/'))
     .pipe(size({
-      title: 'size of TypeScript js'
+      title: 'Size of TypeScript js'
     }))
     .pipe(browserSync.reload({stream:true}));
 });
@@ -164,24 +167,23 @@ gulp.task('images', () => {
 
 // Clean destination dir and rebuild project
 gulp.task('clean', () => {
-  return gulp
-  .src(
+  return gulp.src(
     [
       dir.assDst + 'css/*',
-      dir.assDst + 'js/**',
+      dir.assDst + 'js/*.js*',
+      dir.assDst + 'js/lib/*.js',
+      dir.assDst + 'js/lib/ang2/*.js',
       dir.assDst + 'gfx/*',
       dir.appDst + '*.html'
     ],
-    {
-      read: false
-    }
+    { read: false }
   )
 	.pipe(clean());
 });
 
 // Clear image cache
-gulp.task('clear', (done) => {
-  return cache.clearAll(done);
+gulp.task('clear', () => {
+  return cache.clearAll();
 });
 
 // Watcher will look for changes and execute tasks
