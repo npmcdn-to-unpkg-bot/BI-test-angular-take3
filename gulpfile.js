@@ -41,7 +41,7 @@ const dir = {
       appSrc: 'src/'
 };
 
-gulp.task('js.libsetup', () => {
+gulp.task('js.libs', ['clean', 'clear'], () => {
   return gulp
     .src([
       'node_modules/es6-shim/es6-shim.min.js',
@@ -129,9 +129,13 @@ gulp.task('styles.scss', () => {
   return gulp.src(dir.appSrc + 'scss/**/*.scss');   //TODO: add sass processing, linting, minimizing, uglyfying
 });
 
-gulp.task('js.typescript', () => {
+gulp.task('js.ts', () => {
   return gulp
     .src([
+      "/node_modules/angular2/bundles/typings/angular2/angular2.d.ts",
+      "/node_modules/angular2/bundles/typings/angular2/http.d.ts",
+      "/node_modules/angular2/bundles/typings/angular2/router.d.ts",
+      "/node_modules/rx/ts/rx.all.d.ts",
       dir.appSrc + 'typescript/**/*.ts'
     ])
     .pipe(sourcemaps.init())
@@ -189,7 +193,7 @@ gulp.task('clear', () => {
 // Watcher will look for changes and execute tasks
 gulp.task('watch', () => {
   gulp.watch(dir.appSrc + '**/*.html',          ['html']);
-  gulp.watch(dir.appSrc + 'typescript/**/*.ts', ['js.typescript']);
+  gulp.watch(dir.appSrc + 'typescript/**/*.ts', ['js.ts']);
   gulp.watch(dir.appSrc + 'less/*.less',        ['styles.less']);
   gulp.watch(dir.appSrc + 'gfx/*',              ['images']);
 //  gulp.watch(dir.appSrc + 'scss/*.scss',        ['styles.scss']);
@@ -205,6 +209,6 @@ gulp.task('webserver', () => {
 });
 
 // Default task will clean build dirs/build project and clear image cache
-gulp.task('default', ['clean', 'clear', 'js.libsetup'], () => {
-	gulp.start('styles.less', 'js.typescript', 'images', 'html', 'watch', 'webserver');
+gulp.task('default', ['js.libs'], () => {
+	gulp.start('styles.less', 'js.ts', 'images', 'html', 'watch', 'webserver');
 });
