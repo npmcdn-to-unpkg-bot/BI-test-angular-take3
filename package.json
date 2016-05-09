@@ -4,6 +4,7 @@
   "description": "This is the third take on test Angular project. Now with AngularJS 2, GULP, TypeScript and more…",
   "main": "index.html",
   "scripts": {
+    "env": "env",
     "start": "tsc && concurrently \"npm run tsc:w\" \"npm run lite\" ",
     "tsc": "tsc",
     "tsc:w": "tsc -w",
@@ -58,7 +59,7 @@
     "gulp-notify": "^2.2.0",
     "gulp-typescript": "^2.10.0",
     "gulp-sourcemaps": "^1.6.0",
-    "gulp-header": "^1.7.1",
+    "gulp-header": "^1.8.2",
     "gulp-watch": "^4.3.5"
   }
 }

@@ -11,7 +11,7 @@ const env = process.env.NODE_ENV,
   		cache               = require('gulp-cache'),
   		clean               = require('gulp-rimraf'),
   		stream              = require('event-stream'),
-		  browserSync         = require('browser-sync').create(),
+		  browserSync         = require('browser-sync'),
   		uglify              = require('gulp-uglify'),
   		size                = require('gulp-size'),
   		concat              = require('gulp-concat'),
@@ -52,8 +52,8 @@ gulp.task('js.libsetup', () => {
     .pipe(gulp.dest(dir.assDst + 'js/lib/ang2'))
     .pipe(size({
       title: 'size of libraries'
-    }));
-
+    }))
+		.pipe(browserSync.reload({stream:true}));
 });
 
 // Prepare banner text
@@ -88,9 +88,12 @@ gulp.task('html', () => {
 */
 
 // Copy HTML files
-gulp.task('html', () => {                    //TODO: add minimizing
+gulp.task('html', () => {                    //TODO: add minimizing (in production version)
   gulp.src(dir.appSrc + 'html/**/*.html')
       .pipe(gulp.dest(dir.appDst))
+      .pipe(size({
+        title: 'size of HTML'
+      }))
       .pipe(browserSync.reload({stream:true}));
 });
 
@@ -165,7 +168,7 @@ gulp.task('clean', () => {
   .src(
     [
       dir.assDst + 'css/*',
-      dir.assDst + 'js/*',
+      dir.assDst + 'js/**',
       dir.assDst + 'gfx/*',
       dir.appDst + '*.html'
     ],
@@ -199,9 +202,7 @@ gulp.task('webserver', () => {
 	});
 });
 
-// gulp.task('default', ['js.libsetup', 'js.typescript', 'watch', 'webserver']);
-
 // Default task will clean build dirs/build project and clear image cache
 gulp.task('default', ['clean', 'clear', 'js.libsetup'], () => {
-	gulp.start('styles', 'scripts', 'images', 'html');
+	gulp.start('styles.less', 'js.typescript', 'images', 'html', 'watch', 'webserver');
 });
