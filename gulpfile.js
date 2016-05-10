@@ -132,10 +132,6 @@ gulp.task('styles.scss', () => {
 gulp.task('js.ts', () => {
   return gulp
     .src([
-      "/node_modules/angular2/bundles/typings/angular2/angular2.d.ts",
-      "/node_modules/angular2/bundles/typings/angular2/http.d.ts",
-      "/node_modules/angular2/bundles/typings/angular2/router.d.ts",
-      "/node_modules/rx/ts/rx.all.d.ts",
       dir.appSrc + 'typescript/**/*.ts'
     ])
     .pipe(sourcemaps.init())
