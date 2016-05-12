@@ -19,7 +19,8 @@
     "src/typescript/app.component.ts",
     "src/typescript/boot.ts",
     "src/typescript/hello-app.ts",
-    "src/typescript/hiya.ts"
+    "src/typescript/hiya.ts",
+    "src/typescript/systemjs.config.ts"
   ],
   "filesGlob": [
     "src/**/*.ts"

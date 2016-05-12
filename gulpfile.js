@@ -10,8 +10,6 @@ const env = process.env.NODE_ENV,
   		gulp                = require('gulp'),
   		cache               = require('gulp-cache'),
   		clean               = require('gulp-rimraf'),
-  		stream              = require('event-stream'),
-		  browserSync         = require('browser-sync'),
   		uglify              = require('gulp-uglify'),
   		size                = require('gulp-size'),
   		concat              = require('gulp-concat'),
@@ -23,16 +21,18 @@ const env = process.env.NODE_ENV,
   		rename              = require('gulp-rename'),
   		notify              = require("gulp-notify"),
   		pluginAutoprefix    = require('less-plugin-autoprefix'),
-      loadPlugins         = require('gulp-load-plugins'),
-      pageSpeed           = require('psi'),
       typescript          = require('gulp-typescript'),
       sourcemaps          = require('gulp-sourcemaps'),
       util                = require('gulp-util'),
+      loadPlugins         = require('gulp-load-plugins'),
+  		stream              = require('event-stream'),
+		  browserSync         = require('browser-sync'),
+      pageSpeed           = require('psi'),
       pkg                 = require('./package.json'),
       tsConfig            = require('./tsconfig.json');
 
 // Autoprefixer config
-const autoprefix = new pluginAutoprefix({ browsers: ["Safari >= 8", "iOS >= 7", "Chrome >= 30", "Explorer >= 9", "last 2 Edge versions", "Firefox >= 20"] });
+const autoprefix = new pluginAutoprefix({ browsers: [ "Safari >= 8", "iOS >= 7", "Chrome >= 30", "Firefox >= 20", "Explorer >= 9", "last 2 Edge versions" ] });
 
 // Directories
 const dir = {
@@ -40,24 +40,6 @@ const dir = {
       assDst: 'app/dev/assets/',
       appSrc: 'src/'
 };
-
-gulp.task('js.libs', ['clean', 'clear'], () => {
-  return gulp
-    .src([
-      'node_modules/es6-shim/es6-shim.min.js',
-      'node_modules/systemjs/dist/system-polyfills.js',
-      'node_modules/angular2/es6/dev/src/testing/shims_for_IE.js',
-      'node_modules/angular2/bundles/angular2-polyfills.js',
-      'node_modules/systemjs/dist/system.src.js',
-      'node_modules/rxjs/bundles/Rx.js',
-      'node_modules/angular2/bundles/angular2.dev.js'
-    ])
-    .pipe(gulp.dest(dir.assDst + 'js/lib/ang2'))
-    .pipe(size({
-      title: 'Size of libraries'
-    }))
-		.pipe(browserSync.reload({stream:true}));
-});
 
 // Prepare banner text
 var banner = ['/**',
@@ -67,28 +49,41 @@ var banner = ['/**',
   ' */',
   ''].join('\n');
 
-// Lint scripts
-/*
-gulp.task('lint', () => {
-	return gulp.src('js/custom.js')
-		.pipe(jshint())
-		.pipe(jshint.reporter('default'));
+// Copy requed libs
+gulp.task('js.libs', ['clean', 'clear'], () => {
+  return gulp
+    .src([
+      'node_modules/es6-shim/es6-shim.min.js',
+      'node_modules/zone.js/dist/zone.js',
+      'node_modules/reflect-metadata/Reflect.js',
+      'node_modules/systemjs/dist/system.src.js',
+      // TODO > this is too heavy, should find another way
+      // 'node_modules/rxjs/',
+      // 'node_modules/angular2-in-memory-web-api/',
+      // 'node_modules/@angular/'
+    ])
+    .pipe(gulp.dest(dir.assDst + 'js/lib/ang'))
+    .pipe(size({
+      title: 'Size of libraries'
+    }))
+		.pipe(browserSync.reload({stream:true}));
 });
-*/
 
-// Build views with Jade
-/*
-gulp.task('html', () => {
-	var localsObject = {};
-
-	gulp.src('views/*.jade')
-	.pipe(jade({
-	  locals: localsObject
-	}))
-	.pipe(gulp.dest('assets'))
-	.pipe(browserSync.reload({stream:true}));
+// Process TypeScript
+gulp.task('js.ts', () => {
+  return gulp
+    .src([
+      dir.appSrc + 'typescript/**/*.ts'
+    ])
+    .pipe(sourcemaps.init())
+    .pipe(typescript(tsConfig.compilerOptions))
+    .pipe(sourcemaps.write('.'))
+    .pipe(gulp.dest(dir.assDst + 'js/'))
+    .pipe(size({
+      title: 'Size of TypeScript js'
+    }))
+    .pipe(browserSync.reload({stream:true}));
 });
-*/
 
 // Copy HTML files
 gulp.task('html', () => {                    //TODO: add minimizing (in production version)
@@ -129,21 +124,6 @@ gulp.task('styles.scss', () => {
   return gulp.src(dir.appSrc + 'scss/**/*.scss');   //TODO: add sass processing, linting, minimizing, uglyfying
 });
 
-gulp.task('js.ts', () => {
-  return gulp
-    .src([
-      dir.appSrc + 'typescript/**/*.ts'
-    ])
-    .pipe(sourcemaps.init())
-    .pipe(typescript(tsConfig.compilerOptions))
-    .pipe(sourcemaps.write('.'))
-    .pipe(gulp.dest(dir.assDst + 'js/'))
-    .pipe(size({
-      title: 'Size of TypeScript js'
-    }))
-    .pipe(browserSync.reload({stream:true}));
-});
-
 // Compress images — Will cache to process only changed images, but not all in image folder [ optimizationLevel - range from 0 to 7 (compression will work from 1) which means number of attempts ]
 gulp.task('images', () => {
 	return gulp
@@ -172,7 +152,7 @@ gulp.task('clean', () => {
       dir.assDst + 'css/*',
       dir.assDst + 'js/*.js*',
       dir.assDst + 'js/lib/*.js',
-      dir.assDst + 'js/lib/ang2/*.js',
+      dir.assDst + 'js/lib/ang/*.js',
       dir.assDst + 'gfx/*',
       dir.appDst + '*.html'
     ],

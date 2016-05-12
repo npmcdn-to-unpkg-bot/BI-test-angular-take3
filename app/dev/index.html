@@ -2,36 +2,25 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Angular 2 test — take 3</title>
     <link rel="stylesheet" href="assets/css/style.css">
 
     <!-- 1. Load libraries -->
-    <!-- IE required polyfills, in this exact order -->
-    <script src="assets/js/lib/ang2/es6-shim.min.js"></script>
-    <script src="assets/js/lib/ang2/system-polyfills.js"></script>
-    <script src="assets/js/lib/ang2/shims_for_IE.js"></script>
-    <script src="assets/js/lib/ang2/angular2-polyfills.js"></script>
-    <script src="assets/js/lib/ang2/system.src.js"></script>
-    <script src="assets/js/lib/ang2/Rx.js"></script>
-    <script src="assets/js/lib/ang2/angular2.dev.js"></script>
+    <!-- IE/older browsers required polyfill(s) -->
+    <script src="assets/js/lib/ang/es6-shim.min.js"></script>
+
+    <script src="assets/js/lib/ang/zone.js"></script>
+    <script src="assets/js/lib/ang/Reflect.js"></script>
+    <script src="assets/js/lib/ang/system.src.js"></script>
 
     <!-- 2. Configure SystemJS -->
+    <script src="assets/js/systemjs.config.js"></script>
     <script>
-       System.config({
-         packages: {
-           assets: {
-             format: 'register',
-             defaultExtension: 'js'
-           }
-         }
-       });
-       System.import('assets/js/boot')
-             .then(null, console.error.bind(console));
-     </script>
+      System.import('app').catch(function(err){ console.error(err); });
+    </script>
   </head>
 
-  <!-- 3. Display the application -->
   <body>
     <the-app>
       Loading...  Please wait…

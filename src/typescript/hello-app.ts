@@ -4,12 +4,12 @@
 // path under the angular2 folder,
 // with a module named angular2
 import { Component, View, bootstrap }
-  from 'angular2/core';
+  from '@angular/core';
  
 // define the settings of the component
 // (except view settings)
 @Component({
-  selector: 'app'     // look up the app
+  selector: 'the-app'     // look up the app
 })
 // define view-specific settings
 @View({
