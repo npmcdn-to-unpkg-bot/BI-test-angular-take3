@@ -10,26 +10,26 @@ import gulpLoadPlugins from 'gulp-load-plugins';
 import {output as pagespeed} from 'psi';
 import pkg from './package.json';
 
-const $ = gulpLoadPlugins();
+const gPlug = gulpLoadPlugins();
 const reload = browserSync.reload;
 
 // Lint JavaScript
-gulp.task('lint', () =>
-  gulp.src('app/scripts/**/*.js')
-    .pipe($.eslint())
-    .pipe($.eslint.format())
-    .pipe($.if(!browserSync.active, $.eslint.failOnError()))
-);
+// gulp.task('lint', () =>
+//   gulp.src('app/scripts/**/*.js')
+//     .pipe(gPlug.eslint())
+//     .pipe(gPlug.eslint.format())
+//     .pipe(gPlug.if(!browserSync.active, gPlug.eslint.failOnError()))
+// );
 
 // Optimize images
 gulp.task('images', () =>
   gulp.src('app/images/**/*')
-    .pipe($.cache($.imagemin({
+    .pipe(gPlug.cache(gPlug.imagemin({
       progressive: true,
       interlaced: true
     })))
     .pipe(gulp.dest('dist/images'))
-    .pipe($.size({title: 'images'}))
+    .pipe(gPlug.size({title: 'images'}))
 );
 
 // Copy all files at the root level (app)
@@ -41,7 +41,7 @@ gulp.task('copy', () =>
   ], {
     dot: true
   }).pipe(gulp.dest('dist'))
-    .pipe($.size({title: 'copy'}))
+    .pipe(gPlug.size({title: 'copy'}))
 );
 
 // Compile and automatically prefix stylesheets
@@ -63,17 +63,17 @@ gulp.task('styles', () => {
     'app/styles/**/*.scss',
     'app/styles/**/*.css'
   ])
-    .pipe($.newer('.tmp/styles'))
-    .pipe($.sourcemaps.init())
-    .pipe($.sass({
+    .pipe(gPlug.newer('.tmp/styles'))
+    .pipe(gPlug.sourcemaps.init())
+    .pipe(gPlug.sass({
       precision: 10
-    }).on('error', $.sass.logError))
-    .pipe($.autoprefixer(AUTOPREFIXER_BROWSERS))
+    }).on('error', gPlug.sass.logError))
+    .pipe(gPlug.autoprefixer(AUTOPREFIXER_BROWSERS))
     .pipe(gulp.dest('.tmp/styles'))
     // Concatenate and minify styles
-    .pipe($.if('*.css', $.cssnano()))
-    .pipe($.size({title: 'styles'}))
-    .pipe($.sourcemaps.write('./'))
+    .pipe(gPlug.if('*.css', gPlug.cssnano()))
+    .pipe(gPlug.size({title: 'styles'}))
+    .pipe(gPlug.sourcemaps.write('./'))
     .pipe(gulp.dest('dist/styles'));
 });
 
@@ -88,25 +88,25 @@ gulp.task('scripts', () =>
       './app/scripts/main.js'
       // Other scripts
     ])
-      .pipe($.newer('.tmp/scripts'))
-      .pipe($.sourcemaps.init())
-      .pipe($.babel())
-      .pipe($.sourcemaps.write())
+      .pipe(gPlug.newer('.tmp/scripts'))
+      .pipe(gPlug.sourcemaps.init())
+      .pipe(gPlug.babel())
+      .pipe(gPlug.sourcemaps.write())
       .pipe(gulp.dest('.tmp/scripts'))
-      .pipe($.concat('main.min.js'))
-      .pipe($.uglify({preserveComments: 'some'}))
+      .pipe(gPlug.concat('main.min.js'))
+      .pipe(gPlug.uglify({preserveComments: 'some'}))
       // Output files
-      .pipe($.size({title: 'scripts'}))
-      .pipe($.sourcemaps.write('.'))
+      .pipe(gPlug.size({title: 'scripts'}))
+      .pipe(gPlug.sourcemaps.write('.'))
       .pipe(gulp.dest('dist/scripts'))
 );
 
 // Scan your HTML for assets & optimize them
 gulp.task('html', () => {
   return gulp.src('app/**/*.html')
-    .pipe($.useref({searchPath: '{.tmp,app}'}))
+    .pipe(gPlug.useref({searchPath: '{.tmp,app}'}))
     // Remove any unused CSS
-    .pipe($.if('*.css', $.uncss({
+    .pipe(gPlug.if('*.css', gPlug.uncss({
       html: [
         'app/index.html'
       ],
@@ -116,22 +116,22 @@ gulp.task('html', () => {
 
     // Concatenate and minify styles
     // In case you are still using useref build blocks
-    .pipe($.if('*.css', $.cssnano()))
+    .pipe(gPlug.if('*.css', gPlug.cssnano()))
 
     // Minify any HTML
-    .pipe($.if('*.html', $.htmlmin({
-      removeComments: true,
-      collapseWhitespace: true,
-      collapseBooleanAttributes: true,
-      removeAttributeQuotes: true,
-      removeRedundantAttributes: true,
-      removeEmptyAttributes: true,
-      removeScriptTypeAttributes: true,
+    .pipe(gPlug.if('*.html', gPlug.htmlmin({
+      removeComments:                true,
+      collapseWhitespace:            true,
+      collapseBooleanAttributes:     true,
+      removeAttributeQuotes:         true,
+      removeRedundantAttributes:     true,
+      removeEmptyAttributes:         true,
+      removeScriptTypeAttributes:    true,
       removeStyleLinkTypeAttributes: true,
-      removeOptionalTags: true
+      removeOptionalTags:            true
     })))
     // Output files
-    .pipe($.if('*.html', $.size({title: 'html', showFiles: true})))
+    .pipe(gPlug.if('*.html', gPlug.size({title: 'html', showFiles: true})))
     .pipe(gulp.dest('dist'));
 });
 
@@ -222,10 +222,10 @@ gulp.task('generate-service-worker', ['copy-sw-scripts'], () => {
     ],
     staticFileGlobs: [
       // Add/remove glob patterns to match your directory setup.
-      `${rootDir}/images/**/*`,
-      `${rootDir}/scripts/**/*.js`,
-      `${rootDir}/styles/**/*.css`,
-      `${rootDir}/*.{html,json}`
+      `gPlug{rootDir}/images/**/*`,
+      `gPlug{rootDir}/scripts/**/*.js`,
+      `gPlug{rootDir}/styles/**/*.css`,
+      `gPlug{rootDir}/*.{html,json}`
     ],
     // Translates a static file path to the relative URL that it's served from.
     // This is '/' rather than path.sep because the paths returned from

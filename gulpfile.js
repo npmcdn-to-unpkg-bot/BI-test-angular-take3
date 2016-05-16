@@ -28,6 +28,8 @@ const env = process.env.NODE_ENV,
   		stream              = require('event-stream'),
 		  browserSync         = require('browser-sync'),
       pageSpeed           = require('psi'),
+      globby              = require('globby'),
+      del                 = require('del'),
       pkg                 = require('./package.json'),
       tsConfig            = require('./tsconfig.json');
 
@@ -68,6 +70,18 @@ gulp.task('js.libs', ['clean', 'clear'], () => {
     }))
 		.pipe(browserSync.reload({stream:true}));
 });
+
+// Alternate file copy
+// var globArray = [];
+//
+// gulp.task('diff', function() {
+//   return Promise.all([
+//     globby(globArray, { nodir: true }),
+//     globby(globArray, { cwd: '../../src/', nodir: true })
+//   ])
+//   .then(paths => paths[0].filter(i => paths[1].indexOf(i) < 0))
+//   .then(diffs => del(diffs));
+// });
 
 // Process TypeScript
 gulp.task('js.ts', () => {

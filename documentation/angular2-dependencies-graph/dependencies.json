@@ -1,0 +1,33 @@
+[
+  {
+    "selector": "the-app",
+    "name": "AppComponent",
+    "label": "",
+    "file": "src/typescript/app.component.ts",
+    "directives": [],
+    "providers": [],
+    "templateUrl": [
+      "app.html"
+    ],
+    "styleUrls": []
+  },
+  {
+    "selector": "the-app",
+    "name": "HelloApp",
+    "label": "",
+    "file": "src/typescript/hello-app.ts",
+    "directives": [],
+    "providers": [],
+    "templateUrl": [],
+    "styleUrls": []
+  },
+  {
+    "name": "HelloApp",
+    "label": "",
+    "file": "src/typescript/hello-app.ts",
+    "directives": [],
+    "providers": [],
+    "templateUrl": [],
+    "styleUrls": []
+  }
+]

@@ -34,4 +34,5 @@
     }
     System.config(config);
 })(this);
+
 //# sourceMappingURL=systemjs.config.js.map

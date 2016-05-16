@@ -61,6 +61,8 @@
     "browser-sync": "^2.12.5",
     "psi": "^2.0.3",
     "less-plugin-autoprefix": "^1.5.1",
+    "globby": "^4.0.0",
+    "del": "^2.2.0",
     "gulp": "^3.9.0",
     "gulp-cache": "^0.4.4",
     "gulp-util": "^3.0.7",
