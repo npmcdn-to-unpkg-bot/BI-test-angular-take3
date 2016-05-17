@@ -4,7 +4,7 @@
 ![Filesys layout diagram](src/Angular-2-file-layout.png?raw=true "Filesys layout diagram")
 
 ### Specs
-* ES6 based environment
+* ES5/ES6 based environment
 * TypeScript
 * JShint
 * Gulp based build chain (compiling, transpiling, minimizing, uglyfying, image optimization)
@@ -12,6 +12,6 @@
 
 
 ### Notes
-* SASS/SCSS support incomplete but even when it will be it is either LESS or SASS. 
+* SASS/SCSS support incomplete but even when it will be it is either LESS or SASS.
 
 Created by Jan Mazáč jan@futureproof.cz in May 2016
